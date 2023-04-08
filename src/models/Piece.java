@@ -4,50 +4,24 @@ import java.awt.Color;
 
 public abstract class Piece {
 	private Color color;
-	private int row;
-	private int column;
+	private Position position;
 	private ChessBoard chessBoard;
 	
-	public Piece(Color color, int row, int column, ChessBoard chessBoard) {
+	public Piece(Color color, Position position, ChessBoard chessBoard) {
 		this.color = color;
-		this.row = row;
-		this.column = column;
+		this.position = position;
 		this.chessBoard = chessBoard;
 	}
 	
-	public Color getColor() {
-		return color;
-	}
+	public Color getColor() { return color; }
+	public Position getPosition() { return position ; }
+	public ChessBoard getChessBoard() { return chessBoard; }
 	
-	public int getRow() {
-		return row;
-	}
+	public void setColor(Color color) { this.color = color; }
+	public void setPosition(Position position) { this.position = position; }
+	public void setChessBoard(ChessBoard chessBoard) { this.chessBoard = chessBoard; }
 	
-	public int getColumn() {
-		return column;
-	}
-	
-	public ChessBoard getChessBoard() {
-		return chessBoard;
-	}
-	
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
-	public void setRow(int row) {
-		this.row = row;
-	}
-	
-	public void setColumn(int column) {
-		this.column = column;
-	}
-	
-	public void setChessBoard(ChessBoard chessBoard) {
-		this.chessBoard = chessBoard;
-	}
-	
-	public abstract void moveTo(int toRow, int toColumn);
+	public abstract void movePiece(Move move);
 	
 	public abstract boolean isValidMove(Move move);
 }
