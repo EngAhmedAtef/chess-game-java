@@ -1,26 +1,36 @@
 package models;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * INSTANCE VARIABLES
  * |	DECLARE 2-dimensional array that will hold all the peices on the board, name it "pieces"
- * |	DECLARE a boolean that will indicate if the game is over or not, name it "gameOver"
- * |	DECLARE a variable that will hold the winning player of the game, name it "winningPlayer"
  * 
  * METHOD DECLARATION
  * |	DECLARE a method movePiece(Move move) that will take a Move parameter and move the piece by calling the Piece's moveTo()
- * |	DECLARE a method removePiece(Piece piece) that will take a Piece as a parameter and remove it from the 2-dimensional array
  * 
  * METHOD LOGIC
- * |	void movePiece(Move move)
- * |	| IF game is not over
- * |	| | CALL the piece's movePiece(Move move) method
+ * void movePiece(Move move)
+ * |	IF game is not over
+ * |	|	SET the piece's position to the new position
+ * |	|	IF the move is capturing
+ * |	|	|	REMOVE the captured piece from the board
+ * 
+ * Piece getPiece(Position position)
+ * |	RETURN the piece at the specified position
+ * 
+ * Piece[] getRowPieces(int row)
+ * |	RETURN the pieces at the specified row
+ 
+ * List<Piece> getColumnPieces(int column)
+ * |	RETURN the pieces at the specified column
  * */
 
 public class ChessBoard {
 	// Instance variables
 	private Piece[][] pieces;
-	private boolean gameOver;
-	private Player winningPlayer;
 	
 	// Constructors
 	public ChessBoard(Piece[][] pieces) {
@@ -29,21 +39,48 @@ public class ChessBoard {
 	
 	// Getters
 	public Piece[][] getPieces() { return pieces; }
-	public boolean isGameOver() { return gameOver; }
-	public Player getWinningPlayer() { return winningPlayer; }
 	
 	// Setters
 	public void setPieces(Piece[][] pieces) { this.pieces = pieces; }
-	public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
-	public void setWinningPlayer(Player player) { this.winningPlayer = player; }
 	
 	// Methods
 	public void movePiece(Move move) {
-		if (gameOver) {
-			System.out.println("Game is over, you can't move now.");
-			return;
-		}
 		Piece piece = move.piece();
-		piece.movePiece(move);
+		Position startPosition = move.startPosition();
+		Position endPosition = move.endPosition();
+
+		if (move.isCapturing()) {
+			Piece capturedPiece = pieces[endPosition.row()][endPosition.column()];
+			System.out.println("Piece captured: " + capturedPiece);
+		}
+		
+		pieces[endPosition.row()][endPosition.column()] = piece;
+		piece.setPosition(move.endPosition());
+		pieces[startPosition.row()][startPosition.column()] = null;
+		
+		System.out.println((piece.getColor() == Color.white ? "White " : "Black ") + piece.getClass().getSimpleName() + " moved to " + endPosition);
 	}
+	
+	public Piece getPiece(Position position) {
+		return pieces[position.row()][position.column()];
+	}
+	
+	public Piece[] getRowPieces(int row) {
+		return pieces[row];
+	}
+	
+	public List<Piece> getColumnPieces(int column) {
+		List<Piece> columnPieces = new ArrayList<>();
+		
+		for (Piece[] row : pieces) {
+			columnPieces.add(row[column]);
+		}
+		
+		return columnPieces;
+	}
+	
+	public boolean inBoundMove(Move move) {
+		return move.endPosition().row() < 8 && move.endPosition().column() < 8;
+	}
+	
 }
