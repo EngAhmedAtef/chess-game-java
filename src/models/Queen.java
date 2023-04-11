@@ -24,9 +24,9 @@ public class Queen extends Piece {
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving out the bounds of the board");
 
 		Piece boardPiece = getChessBoard().getPiece(move.endPosition());
-		
+
 		// Check if the Queen is moving to the same location
-		if (rowDifference == 0 && columnDifference == 0)
+		if (move.endPosition().equals(move.startPosition()))
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving to the same initial location");
 
 		// Check if the Queen is moving diagonally
