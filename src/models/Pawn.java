@@ -2,25 +2,6 @@ package models;
 
 import java.awt.Color;
 
-/*
- * INSTANCE VARIABLES
- * |	DECLARE a boolean that indicates if the Pawn moved at least once, name it "hasMoved"
- * 
- * METHOD LOGIC
- * |	boolean isValidMove(Move move)
- * |	|	IF the destination square is occupied by a piece
- * |	|	|	RETURN false
- * |	|	IF the pawn is moving forward 2 squares when it already has moved
- * |	|	|	RETURN false
- * |	|	IF the pawn is moving 2 squares as its first move but blocked
- * |	|	| RETURN false
- * |	|	IF the pawn is capturing diagonally
- * |	|	|	CALL the methods; movePiece(Move move) and removePiece(Piece) on the chessBoard reference
- * |	|	IF the pawn is moving 1 or 2 squares
- * |	|	|	SET hasMoved to true and return true
- * |	|	RETURN false
- * */
-
 public class Pawn extends Piece {
 	// Instance variables
 	private boolean hasMoved;
@@ -43,7 +24,7 @@ public class Pawn extends Piece {
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 		
 		// Check if the pawn is going out of the board
-		if (!getChessBoard().inBoundMove(move))
+		if (!getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "New position is out of bounds of the board");
 		
 		// Check if the pawn is moving to the same position

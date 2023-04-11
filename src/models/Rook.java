@@ -4,23 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * METHOD LOGIC
- * boolean isValidMove(Move move)
- * |	GET intermediate squares between the end position and start position
- * |	IF any of the intermediate squares are occupied
- * |	| RETURN false
- * |	IF the desired square is occupied by a same colored piece
- * |	| RETURN false
- * 
- * boolean getIntermediatePieces(Move move, int rowDifference, int columnDifference) 
- * |	CHECK if the Rook is moving horizontally or vertically
- * |	ITERATE over the chess board
- * |	|	GET all the pieces in the same row/column
- * |	|	IF there is at least 1 piece
- * |	|	|	RETURN true
- * */
-
 public class Rook extends Piece {
 
 	// Constructors
@@ -30,7 +13,7 @@ public class Rook extends Piece {
 
 	// Methods
 	@Override
-	public boolean isValidMove(Move move) {
+	public MoveStatus isValidMove(Move move) {
 		int rowDifference = move.endPosition().row() - move.startPosition().row();
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 		

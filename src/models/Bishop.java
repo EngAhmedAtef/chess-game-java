@@ -2,17 +2,6 @@ package models;
 
 import java.awt.Color;
 
-/*
- * boolean isValidMove(Move move)
- * |	CHECK if the bishop is not moving diagonally
- * |	|	RETURN false
- * |	CHECK if the bishop is moving diagonally but there is intermediate pieces
- * |	|	RETURN false
- * |	CHECK if the bishop is moving diagonally without intermediate pieces but the desired square 
- * |	is occupied by a same colored piece
- * |	|	RETURN false
- * */
-
 public class Bishop extends Piece {
 
 	// Constructors

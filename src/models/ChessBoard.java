@@ -4,30 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * INSTANCE VARIABLES
- * |	DECLARE 2-dimensional array that will hold all the peices on the board, name it "pieces"
- * 
- * METHOD DECLARATION
- * |	DECLARE a method movePiece(Move move) that will take a Move parameter and move the piece by calling the Piece's moveTo()
- * 
- * METHOD LOGIC
- * void movePiece(Move move)
- * |	IF game is not over
- * |	|	SET the piece's position to the new position
- * |	|	IF the move is capturing
- * |	|	|	REMOVE the captured piece from the board
- * 
- * Piece getPiece(Position position)
- * |	RETURN the piece at the specified position
- * 
- * Piece[] getRowPieces(int row)
- * |	RETURN the pieces at the specified row
- 
- * List<Piece> getColumnPieces(int column)
- * |	RETURN the pieces at the specified column
- * */
-
 public class ChessBoard {
 	// Instance variables
 	private Piece[][] pieces;
@@ -79,7 +55,7 @@ public class ChessBoard {
 		return columnPieces;
 	}
 	
-	public boolean inBoundMove(Move move) {
+	public boolean isLegalMove(Move move) {
 		return move.endPosition().row() < 8 && move.endPosition().column() < 8;
 	}
 	

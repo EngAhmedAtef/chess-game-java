@@ -2,16 +2,9 @@ package models;
 
 import java.awt.Color;
 
-/*
- * boolean isValidMove(Move move)
- * |	CHECK if the Queen is moving horizontally or vertically
- * |	|	IF there is any intermediate pieces or the desired square is occupied by a piece of the same color
- * |	|	|	RETURN false
- * |	CHECK if the Queen is moving diagonally
- * |	|	IF there isn't any intermediate pieces and the desired square is not occupied by a piece of the same color
- * |	|	|	RETURN true
- * |	| RETURN false
- * */
+import static util.ChessUtilities.isDiagonalClear;
+import static util.ChessUtilities.isHorizontalClear;
+import static util.ChessUtilities.isVerticalClear;
 
 public class Queen extends Piece {
 
@@ -22,31 +15,67 @@ public class Queen extends Piece {
 
 	// Methods
 	@Override
-	public boolean isValidMove(Move move) {
+	public MoveStatus isValidMove(Move move) {
 		int rowDifference = move.endPosition().row() - move.startPosition().row();
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 
-		// Check if the Queen is moving horizontally or vertically
-		if ((rowDifference == 0 && columnDifference != 0) || (rowDifference != 0 && columnDifference == 0)) {
-			int min = Math.min(move.startPosition().row(), move.endPosition().row());
-			int max = Math.max(move.startPosition().row(), move.endPosition().row());
-			// Check if there's any intermediate pieces vertically
-			for (int i = min + 1; i < max; i++)
-				if (getChessBoard().getPiece(new Position(getPosition().row(), i)) != null)
-					return false;
-			
-			min = Math.min(move.startPosition().column(), move.endPosition().column());
-			max = Math.max(move.startPosition().column(), move.endPosition().column());
-			// Check if there's any intermediate pieces horizontally
-			for (int i = min + 1; i < max; i++)
-				if (getChessBoard().getPiece(new Position(i, getPosition().column())) != null)
-					return false;
-			// Check if the desired square is occupied by a piece of the same color
-			if (getChessBoard().getPiece(move.endPosition()) != null && getChessBoard().getPiece(move.endPosition()).getColor() == getColor())
-				return false;
+		// Check if the Queen is moving out the bounds of the board
+		if (!getChessBoard().isLegalMove(move))
+			return new MoveStatus(MoveState.FAILURE, "The Queen is moving out the bounds of the board");
+
+		Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+		
+		// Check if the Queen is moving to the same location
+		if (rowDifference == 0 && columnDifference == 0)
+			return new MoveStatus(MoveState.FAILURE, "The Queen is moving to the same initial location");
+
+		// Check if the Queen is moving diagonally
+		if (Math.abs(rowDifference) == Math.abs(columnDifference)) {
+			// If the Queen is moving Diagonally and it is blocked
+			if (!isDiagonalClear(getChessBoard(), move.startPosition(), move.endPosition()))
+				return new MoveStatus(MoveState.FAILURE, "The Queen is moving diagonally but it is blocked.");
+
+			// If the Queen is moving diagonally with no intermediate pieces but the desired
+			// square is occupied by a piece of the same color
+			if (boardPiece != null && boardPiece.getColor() == getColor())
+				return new MoveStatus(MoveState.FAILURE,
+						"The Queen tried to move but square is occupied by a piece of the same color");
+
+			return new MoveStatus(MoveState.SUCCESS, null);
 		}
 
-		return true;
+		// Check if the Queen is moving horizontally
+		if (rowDifference == 0 && columnDifference != 0) {
+			// If the Queen is moving horizontally and it is blocked
+			if (!isHorizontalClear(getChessBoard(), move.piece(), move.startPosition(), move.endPosition()))
+				return new MoveStatus(MoveState.FAILURE, "The Queen is moving horizontally but it is blocked.");
+
+			// If the Queen is moving horizontally with no intermediate pieces but the
+			// desired
+			// square is occupied by a piece of the same color
+			if (boardPiece != null && boardPiece.getColor() == getColor())
+				return new MoveStatus(MoveState.FAILURE,
+						"The Queen tried to move but square is occupied by a piece of the same color");
+
+			return new MoveStatus(MoveState.SUCCESS, null);
+		}
+
+		// Check if the Queen is moving vertically
+		if (rowDifference != 0 && columnDifference == 0) {
+			// If the Queen is moving vertically and it is blocked
+			if (!isVerticalClear(getChessBoard(), move.piece(), move.endPosition(), move.startPosition()))
+				return new MoveStatus(MoveState.FAILURE, "The Queen is moving vertically but it is blocked.");
+
+			// If the Queen is moving vertically with no intermediate pieces but the desired
+			// square is occupied by a piece of the same color
+			if (boardPiece != null && boardPiece.getColor() == getColor())
+				return new MoveStatus(MoveState.FAILURE,
+						"The Queen tried to move but square is occupied by a piece of the same color");
+
+			return new MoveStatus(MoveState.SUCCESS, null);
+		}
+
+		return new MoveStatus(MoveState.FAILURE, "The Queen is not moving diagonally, horizotnally or vertically");
 	}
 
 }

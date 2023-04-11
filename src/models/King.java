@@ -4,24 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * METHOD LOGIC
- * boolean isValidMove(Move move)
- * |	IF the king moves more than 1 square
- * |	| RETURN false
- * |	IF the king moves 1 square and the square is occupied
- * |	| RETURN false
- * |	| IF the king moves 1 square and the square is not occupied but the move will result in the king being in check
- * |	| RETURN false
- * |	ELSE
- * |	| RETURN true
- * 
- * boolean isResultingInCheck(Move move) 
- * |	ITERATE over all the pieces on the board of the different colored pieces
- * |	IF any of the pieces's has a valid move on the king's new position
- * |	| RETURN true
- * */
-
 public class King extends Piece {
 
 	// Instance variables
