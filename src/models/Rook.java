@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import static util.ChessUtilities.isHorizontalClear;
+import static util.ChessUtilities.isVerticalClear;
+
 public class Rook extends Piece {
 
 	// Constructors
@@ -16,46 +19,43 @@ public class Rook extends Piece {
 	public MoveStatus isValidMove(Move move) {
 		int rowDifference = move.endPosition().row() - move.startPosition().row();
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
-		
-		// Check if the intermediate squares are occupied
-		boolean hasIntermediatePieces = hasIntermediatePieces(move, rowDifference, columnDifference);
-		if (hasIntermediatePieces)
-			return false;
-		
-		// Check if the desired square is occupied by a same colored piece
-		Piece desiredSquare = getChessBoard().getPiece(move.endPosition());
-		if (desiredSquare != null && desiredSquare.getColor() == getColor())
-			return false;
-				
-		return true;
-	}
-	
-	private boolean hasIntermediatePieces(Move move, int rowDifference, int columnDifference) {
-		// Rook is moving horizontally
-		if (rowDifference == 0 && columnDifference != 0) {
-			Piece[] rowPieces = getChessBoard().getRowPieces(getPosition().row());
-			
-			// Check if the Rook is moving to the right or left and check intermediate squares accordingly
-			for (int i = columnDifference > 0 ? getPosition().column() + 1 : getPosition().column() - 1; i < move.endPosition().column(); i++) {
-				// If there's at least one piece then return true
-				if (rowPieces[i] != null)
-					return true;
-			}
-		}
-		
-		// Rook is moving vertically
-		else if (rowDifference != 0 && columnDifference == 0) {
-			List<Piece> columnPieces = getChessBoard().getColumnPieces(getPosition().column());
-			
-			// Check if the Rook is moving up or down and check intermediate squares accordingly
-			for (int i = rowDifference > 0 ?  getPosition().column() + 1 : getPosition().column() - 1; i < move.endPosition().row(); i++) {
-				// If there's at least one piece then return true
-				if (columnPieces.get(i) != null)
-					return true;
-			}
-		}
-		
-		return false;
-	}
 
+		// Check if the Rook is moving out of the board's bounds
+		if (!getChessBoard().isLegalMove(move))
+			return new MoveStatus(MoveState.FAILURE, "The Rook is moving out of the board's bounds");
+		
+		// Check if the Rook is moving to the same initial position
+		if (move.endPosition().equals(move.startPosition()))
+			return new MoveStatus(MoveState.FAILURE, "The Rook is moving to the same initial position");
+		
+		// Check if the Rook is moving horizontally
+		if (rowDifference == 0 && columnDifference != 0) {
+			// Check if there is intermediate pieces
+			if (!isHorizontalClear(getChessBoard(), this, move.startPosition(), move.endPosition()))
+				return new MoveStatus(MoveState.FAILURE, "The Rook is moving horizontally but the path is blocked");
+
+			// Check if the desired square is occupied by a piece of the same color
+			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			if (boardPiece != null && boardPiece.getColor() == getColor())
+				return new MoveStatus(MoveState.FAILURE,
+						"The Rook is trying to move but the square is occupied by a piece of the same color");
+			
+			return new MoveStatus(MoveState.SUCCESS, null);
+		}
+		// Check if the Rook is moving vertically
+		if (rowDifference != 0 && columnDifference == 0) {
+			// Check if there is intermediate pieces
+			if (!isVerticalClear(getChessBoard(), this, move.startPosition(), move.endPosition()))
+				return new MoveStatus(MoveState.FAILURE, "The Rook is moving vertically but the path is blocked");
+			
+			// Check if the desired square is occupied by a piece of the same color
+			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			if (boardPiece != null && boardPiece.getColor() == getColor())
+				return new MoveStatus(MoveState.FAILURE,
+						"The Rook is trying to move but the square is occupied by a piece of the same color");
+			return new MoveStatus(MoveState.SUCCESS, null);
+		}
+
+		return new MoveStatus(MoveState.FAILURE, "The Rook only moves horizontally or vertically");
+	}
 }
