@@ -41,6 +41,10 @@ public class ChessBoard {
 		return pieces[position.row()][position.column()];
 	}
 	
+	public void addPiece(Piece piece, Position position) {
+		pieces[position.row()][position.column()] = piece;
+	}
+	
 	public Piece[] getRowPieces(int row) {
 		return pieces[row];
 	}

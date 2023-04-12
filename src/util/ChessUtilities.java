@@ -1,8 +1,13 @@
 package util;
 
+import java.awt.Color;
+
 import models.ChessBoard;
+import models.Move;
 import models.Piece;
 import models.Position;
+import models.Piece.MoveState;
+import models.Piece.MoveStatus;
 
 public abstract class ChessUtilities {
 
@@ -46,6 +51,20 @@ public abstract class ChessUtilities {
 			if (board.getPiece(new Position(i, piece.getPosition().column())) != null)
 				return false;
 		return true;
+	}
+	
+	public static void validateAndMove(Move move, ChessBoard board) {
+		MoveStatus moveStatus = move.piece().isValidMove(move);
+		if (moveStatus.getMoveState() == MoveState.SUCCESS)
+			board.movePiece(move);
+		else 
+			System.out.println(moveStatus.getMessage());
+			
+	}
+	
+	public static ChessBoard setupBoard() {
+		Piece[][] pieces = new Piece[8][8];
+		return new ChessBoard(pieces);
 	}
 
 }
