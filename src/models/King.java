@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.PieceFactory;
+
 public class King extends Piece {
 
 	// Instance variables
 	private boolean isChecked;
+	private int numOfChecks = 0;
+	private final int maxChecks = 3;
 
 	// Constructors
 	public King(Color color, Position position, ChessBoard chessBoard) {
@@ -59,6 +63,16 @@ public class King extends Piece {
 	}
 
 	private boolean isResultingInCheck(Move move) {
+		// Check if this method was called 3 times
+		// In that case the method is being invoked by both Kings which 
+		// will lead to a StackOverFlow
+		// And so we terminate by returning true in that case if it was invoked 3 times
+		if (numOfChecks == maxChecks) {
+			numOfChecks = 0;
+			return true;
+		}
+		
+		numOfChecks++;
 		List<Piece> diffColoredPieces = new ArrayList<>();
 
 		for (Piece[] row : getChessBoard().getPieces()) {
@@ -69,16 +83,25 @@ public class King extends Piece {
 		}
 		
 		System.out.println(diffColoredPieces.size());
+		
+		Piece kingCopy = new King(getColor(), move.endPosition(), getChessBoard());
+		getChessBoard().addPiece(kingCopy, kingCopy.getPosition());
 
 		boolean checkPiece = diffColoredPieces.stream()
 				.anyMatch(piece -> piece.isValidMove(new Move(piece, piece.getPosition(), move.endPosition(), true))
 						.getMoveState() == MoveState.SUCCESS);
 
+		getChessBoard().removePiece(kingCopy);
+		kingCopy = null;
+		
 		System.out.println(checkPiece);
 		
-		if (checkPiece)
-			return true;
+		if (checkPiece) {
+			numOfChecks = 0;
+			return true;	
+		}
 
+		numOfChecks = 0;
 		return false;
 	}
 
