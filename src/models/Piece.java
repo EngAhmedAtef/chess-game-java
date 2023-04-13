@@ -34,6 +34,8 @@ public abstract class Piece {
 		return (color == Color.white ? "White " : "Black ") + this.getClass().getSimpleName() + " - " + getPosition();
 	}
 	
+	
+	// Inner class
 	public class MoveStatus {
 		private MoveState moveState;
 		private String message;

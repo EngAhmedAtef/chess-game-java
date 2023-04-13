@@ -7,18 +7,22 @@ import java.util.List;
 public class ChessBoard {
 	// Instance variables
 	private Piece[][] pieces;
-	
+
 	// Constructors
 	public ChessBoard(Piece[][] pieces) {
 		this.pieces = pieces;
 	}
-	
+
 	// Getters
-	public Piece[][] getPieces() { return pieces; }
-	
+	public Piece[][] getPieces() {
+		return pieces;
+	}
+
 	// Setters
-	public void setPieces(Piece[][] pieces) { this.pieces = pieces; }
-	
+	public void setPieces(Piece[][] pieces) {
+		this.pieces = pieces;
+	}
+
 	// Methods
 	public void movePiece(Move move) {
 		Piece piece = move.piece();
@@ -29,43 +33,45 @@ public class ChessBoard {
 			Piece capturedPiece = pieces[endPosition.row()][endPosition.column()];
 			System.out.println("Piece captured: " + capturedPiece);
 		}
-		
+
 		pieces[endPosition.row()][endPosition.column()] = piece;
 		piece.setPosition(move.endPosition());
 		pieces[startPosition.row()][startPosition.column()] = null;
-		
-		System.out.println((piece.getColor() == Color.white ? "White " : "Black ") + piece.getClass().getSimpleName() + " moved to " + endPosition);
+
+		System.out.println((piece.getColor() == Color.white ? "White " : "Black ") + piece.getClass().getSimpleName()
+				+ " moved to " + endPosition);
 	}
-	
+
 	public Piece getPiece(Position position) {
 		return pieces[position.row()][position.column()];
 	}
-	
+
 	public void addPiece(Piece piece, Position position) {
 		pieces[position.row()][position.column()] = piece;
 	}
-	
+
 	public void removePiece(Piece piece) {
 		Position position = piece.getPosition();
 		pieces[position.row()][position.column()] = null;
 	}
-	
+
 	public Piece[] getRowPieces(int row) {
 		return pieces[row];
 	}
-	
+
 	public List<Piece> getColumnPieces(int column) {
 		List<Piece> columnPieces = new ArrayList<>();
-		
+
 		for (Piece[] row : pieces) {
 			columnPieces.add(row[column]);
 		}
-		
+
 		return columnPieces;
 	}
-	
+
 	public boolean isLegalMove(Move move) {
-		return move.endPosition().row() < 8 && move.endPosition().column() < 8;
+		return (move.endPosition().row() >= 0 && move.endPosition().row() < 8)
+				&& (move.endPosition().column() >= 0 && move.endPosition().column() < 8);
 	}
-	
+
 }
