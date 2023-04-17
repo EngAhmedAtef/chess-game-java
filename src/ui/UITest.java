@@ -1,28 +1,45 @@
 package ui;
 
-import java.awt.*;
+import static util.ChessUtilities.setupBoard;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import models.ChessBoard;
+import models.King;
+import models.Piece;
+import models.Position;
+import models.Queen;
+import util.PieceColors;
+import util.PieceFactory;
 
 public class UITest {
 
 	public static void main(String[] args) {
-		new MyFrame();
+		new ChessGameFrame();
 	}
 
 }
 
-class MyFrame extends JFrame {
+class ChessGameFrame extends JFrame {
 
-	private static final long serialVersionUID = 5322341613804524181L;
+	ChessGameFrame() {
 
-	MyFrame() {
-
-		MyPanel panel = new MyPanel();
+		ChessBoard board = setupBoard();
+		ChessBoardPanel panel = new ChessBoardPanel(board);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(new ImageIcon("whitePawn.png").getImage());
 		setTitle("Atef's Chess");
+		setResizable(false);
 
 		ImageIcon icon = new ImageIcon("whitePawn.png");
 
@@ -66,30 +83,43 @@ class MyFrame extends JFrame {
 	}
 }
 
-class MyPanel extends JPanel {
+class ChessBoardPanel extends JPanel {
 
-	private static final long serialVersionUID = 8974674497126370970L;
-	
 	ImageIcon icon = new ImageIcon("whitePawn.png");
-	JButton[][] pieces = new JButton[8][8];
-	int squareEdge = getWidth() / 8;
+	int squareEdge;
+	ChessBoard board;
 
-	MyPanel() {
+	ChessBoardPanel(ChessBoard board) {
+		this.board = board;
+		
 		setLayout(null);
 		setBorder(BorderFactory.createLineBorder(Color.black, 3));
 		setPreferredSize(new Dimension(600, 600));
+		setSize(600, 600);
 		setBackground(Color.yellow);
 
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
+		squareEdge = getWidth() / 8;
+
+		Piece whiteQueen = PieceFactory.createPiece(Queen.class, PieceColors.BLACK_PIECE, new Position(2, 2), board, PieceUI.BLACK_QUEEN);
+		board.addPiece(whiteQueen, whiteQueen.getPosition());
+		drawBoard();
+
+	}
+
+	private void drawBoard() {
+		removeAll();
+		Piece[][] boardPieces = board.getPieces();
+		for (int row = 0; row < boardPieces.length; row++) {
+			for (int col = 0; col < boardPieces[row].length; col++) {
 				JButton piece = new JButton();
-				piece.setIcon(icon);
-				piece.setPreferredSize(new Dimension(squareEdge, squareEdge));
+				if (boardPieces[row][col] != null) {
+					ImageIcon pieceIcon = boardPieces[row][col].getPieceUI().getIcon();
+					piece.setIcon(pieceIcon);
+				}
 				piece.setBackground((row + col) % 2 == 0 ? Color.white : new Color(145, 127, 179));
 				piece.setBounds(col * squareEdge, row * squareEdge, squareEdge, squareEdge);
-				pieces[row][col] = piece;
+				piece.setFocusable(false);
 				add(piece);
-				
 			}
 		}
 	}

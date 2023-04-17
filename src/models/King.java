@@ -1,10 +1,10 @@
 package models;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.PieceFactory;
+import ui.PieceUI;
+import util.PieceColors;
 
 public class King extends Piece {
 
@@ -14,8 +14,8 @@ public class King extends Piece {
 	private final int maxChecks = 3;
 
 	// Constructors
-	public King(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public King(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Getters
@@ -84,7 +84,8 @@ public class King extends Piece {
 		
 		System.out.println(diffColoredPieces.size());
 		
-		Piece kingCopy = new King(getColor(), move.endPosition(), getChessBoard());
+		// TODO: Need to differentiate between a copy piece for logic purpose and a real piece that should be added to the UI
+		Piece kingCopy = new King(getColor(), move.endPosition(), getChessBoard(), getPieceUI());
 		getChessBoard().addPiece(kingCopy, kingCopy.getPosition());
 
 		boolean checkPiece = diffColoredPieces.stream()

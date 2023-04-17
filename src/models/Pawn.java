@@ -2,19 +2,17 @@ package models;
 
 import static util.ChessUtilities.isVerticalClear;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
+import ui.PieceUI;
 import util.PieceColors;
 
 public class Pawn extends Piece {
+
 	// Instance variables
 	private boolean hasMoved;
 
 	// Constructors
-	public Pawn(PieceColors color, Position position, ChessBoard chessBoard, ImageIcon icon) {
-		super(color, position, chessBoard, icon);
+	public Pawn(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Getters
@@ -42,7 +40,10 @@ public class Pawn extends Piece {
 			return new MoveStatus(MoveState.FAILURE, "The Pawn is moving to the same initial position");
 
 		// Check if the pawn is moving 1 square
-		if (((getColor() == Color.white && rowDifference == 1) || (getColor() == Color.black && rowDifference == -1))
+		// We have to keep in mind that the position + color of the piece matters
+		// So we'll assume that the bottom pieces are either White or any other colors to be added (like Golden maybe)
+		// And the top pieces are always the Black pieces
+		if (((getColor() == PieceColors.WHITE_PIECE && rowDifference == -1) || (getColor() == PieceColors.BLACK_PIECE && rowDifference == 1))
 				&& columnDifference == 0) {
 			// Check if the square is occupied
 			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
@@ -54,7 +55,7 @@ public class Pawn extends Piece {
 		}
 
 		// Check if the pawn is moving 2 squares
-		if (((getColor() == Color.white && rowDifference == 2) || (getColor() == Color.black && rowDifference == -2))
+		if (((getColor() == PieceColors.WHITE_PIECE && rowDifference == -2) || (getColor() == PieceColors.BLACK_PIECE && rowDifference == 2))
 				&& columnDifference == 0) {
 			// Check if the pawn never moved before
 			if (hasMoved())
@@ -75,8 +76,8 @@ public class Pawn extends Piece {
 		}
 
 		// Check if the pawn is moving diagonally
-		if ((getColor() == Color.white && (rowDifference == 1 && Math.abs(columnDifference) == 1))
-				|| (getColor() == Color.black && (rowDifference == -1 && Math.abs(columnDifference) == 1))) {
+		if ((getColor() == PieceColors.WHITE_PIECE && (rowDifference == -1 && Math.abs(columnDifference) == 1))
+				|| (getColor() == PieceColors.BLACK_PIECE && (rowDifference == 1 && Math.abs(columnDifference) == 1))) {
 			// Check if there is a piece to capture
 			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null && boardPiece.getColor() != getColor())

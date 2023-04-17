@@ -1,16 +1,17 @@
 package models;
 
-import java.awt.Color;
-
 import static util.ChessUtilities.isDiagonalClear;
 import static util.ChessUtilities.isHorizontalClear;
 import static util.ChessUtilities.isVerticalClear;
 
+import ui.PieceUI;
+import util.PieceColors;
+
 public class Queen extends Piece {
 
 	// Constructors
-	public Queen(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public Queen(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Methods
@@ -23,12 +24,11 @@ public class Queen extends Piece {
 		if (!getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving out the bounds of the board");
 
-		Piece boardPiece = getChessBoard().getPiece(move.endPosition());
-
 		// Check if the Queen is moving to the same location
 		if (move.endPosition().equals(move.startPosition()))
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving to the same initial location");
 
+		Piece boardPiece = getChessBoard().getPiece(move.endPosition());
 		// Check if the Queen is moving diagonally
 		if (Math.abs(rowDifference) == Math.abs(columnDifference)) {
 			// If the Queen is moving Diagonally and it is blocked

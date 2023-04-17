@@ -1,17 +1,16 @@
 package models;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-
 import static util.ChessUtilities.isHorizontalClear;
 import static util.ChessUtilities.isVerticalClear;
+
+import ui.PieceUI;
+import util.PieceColors;
 
 public class Rook extends Piece {
 
 	// Constructors
-	public Rook(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public Rook(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Methods

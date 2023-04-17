@@ -16,14 +16,5 @@ import util.PieceFactory;
 public class KingTestDrive {
 
 	public static void main(String[] args) {
-		ChessBoard board = setupBoard();
-
-		Piece wKing = PieceFactory.createPiece(King.class, Color.white, new Position(0, 0), board);
-		Piece bKing = PieceFactory.createPiece(King.class, Color.black, new Position(1, 2), board);
-
-		Move move = new Move(wKing, wKing.getPosition(), new Position(0, 1), false);
-		validateAndMove(move, board);
-		move = new Move(wKing, wKing.getPosition(), new Position(0, 1), false);
-		validateAndMove(move, board);
 	}
 }

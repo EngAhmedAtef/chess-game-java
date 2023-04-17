@@ -42,7 +42,7 @@ public class ChessBoard {
 		piece.setPosition(move.endPosition());
 		pieces[startPosition.row()][startPosition.column()] = null;
 
-		System.out.println((piece.getColor() == Color.white ? "White " : "Black ") + piece.getClass().getSimpleName()
+		System.out.println(piece.getColor().getColorName() + piece.getClass().getSimpleName()
 				+ " moved to " + endPosition);
 	}
 

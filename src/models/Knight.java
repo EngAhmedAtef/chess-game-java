@@ -1,12 +1,13 @@
 package models;
 
-import java.awt.Color;
+import ui.PieceUI;
+import util.PieceColors;
 
 public class Knight extends Piece {
 
 	// Constructors
-	public Knight(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public Knight(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Methods

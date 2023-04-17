@@ -1,13 +1,15 @@
 package models;
 
-import java.awt.Color;
 import static util.ChessUtilities.isDiagonalClear;
+
+import ui.PieceUI;
+import util.PieceColors;
 
 public class Bishop extends Piece {
 
 	// Constructors
-	public Bishop(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public Bishop(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
+		super(color, position, chessBoard, pieceUI);
 	}
 
 	// Methods
