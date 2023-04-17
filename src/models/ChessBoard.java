@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoard {
+	// Static variables
+	public static final Color COLOR_PEACH = new Color(0xFFB6B9);
+	public static final Color COLOR_TEAL = new Color(0xBBDED6);
+	
 	// Instance variables
 	private Piece[][] pieces;
 

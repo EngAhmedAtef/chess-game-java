@@ -1,13 +1,11 @@
 package util;
 
-import java.awt.Color;
-
 import models.ChessBoard;
 import models.Move;
+import models.MoveState;
+import models.MoveStatus;
 import models.Piece;
 import models.Position;
-import models.Piece.MoveState;
-import models.Piece.MoveStatus;
 
 public abstract class ChessUtilities {
 

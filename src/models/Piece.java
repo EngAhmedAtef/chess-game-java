@@ -1,58 +1,42 @@
 package models;
 
-import java.awt.Color;
+import javax.swing.ImageIcon;
+
+import util.PieceColors;
 
 
 public abstract class Piece {
 	// Instance variables
-	private Color color;
+	private PieceColors color;
 	private Position position;
 	private ChessBoard chessBoard;
+	private ImageIcon icon;
 	
 	// Constructors
-	public Piece(Color color, Position position, ChessBoard chessBoard) {
+	public Piece(PieceColors color, Position position, ChessBoard chessBoard, ImageIcon icon) {
 		this.color = color;
 		this.position = position;
 		this.chessBoard = chessBoard;
+		this.icon = icon;
 	}
 	
 	// Getters
-	public Color getColor() { return color; }
+	public PieceColors getColor() { return color; }
 	public Position getPosition() { return position; }
 	public ChessBoard getChessBoard() { return chessBoard; }
+	public ImageIcon getIcon() { return icon; }
 	
 	// Setters
-	public void setColor(Color color) { this.color = color; }
+	public void setColor(PieceColors color) { this.color = color; }
 	public void setPosition(Position position) { this.position = position; }
 	public void setChessBoard(ChessBoard chessBoard) { this.chessBoard = chessBoard; }
+	public void setIcon(ImageIcon icon) { this.icon = icon; }
 	
 	// Methods
 	public abstract MoveStatus isValidMove(Move move);
 	
 	@Override
 	public String toString() {
-		return (color == Color.white ? "White " : "Black ") + this.getClass().getSimpleName() + " - " + getPosition();
-	}
-	
-	
-	// Inner class
-	public class MoveStatus {
-		private MoveState moveState;
-		private String message;
-		
-		MoveStatus(MoveState moveState, String message) {
-			this.moveState = moveState;
-			this.message = message;
-		}
-		
-		public MoveState getMoveState() { return moveState; }
-		public String getMessage() { return message; }
-		
-		public void setMoveState(MoveState moveState) { this.moveState = moveState; }
-		public void setMessage(String message) { this.message = message; }
-	}
-	
-	public enum MoveState {
-		SUCCESS, FAILURE
+		return (color.getColorName() + this.getClass().getSimpleName() + " - " + getPosition());
 	}
 }

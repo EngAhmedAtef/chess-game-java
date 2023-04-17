@@ -4,13 +4,17 @@ import static util.ChessUtilities.isVerticalClear;
 
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
+
+import util.PieceColors;
+
 public class Pawn extends Piece {
 	// Instance variables
 	private boolean hasMoved;
 
 	// Constructors
-	public Pawn(Color color, Position position, ChessBoard chessBoard) {
-		super(color, position, chessBoard);
+	public Pawn(PieceColors color, Position position, ChessBoard chessBoard, ImageIcon icon) {
+		super(color, position, chessBoard, icon);
 	}
 
 	// Getters
