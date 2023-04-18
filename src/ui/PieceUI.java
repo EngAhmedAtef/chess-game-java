@@ -2,20 +2,18 @@ package ui;
 
 import javax.swing.ImageIcon;
 
-import models.Piece;
-
 public class PieceUI {
 	// Static variables
 	private static final PieceUI pieceUI = new PieceUI(null);
 	
-	public static final PieceUI WHITE_Bishop = pieceUI.new WhiteBishopUI();
+	public static final PieceUI WHITE_BISHOP = pieceUI.new WhiteBishopUI();
 	public static final PieceUI WHITE_KING = pieceUI.new WhiteKingUI();
 	public static final PieceUI WHITE_KNIGHT = pieceUI.new WhiteKnightUI();
 	public static final PieceUI WHITE_PAWN = pieceUI.new WhitePawnUI();
 	public static final PieceUI WHITE_QUEEN = pieceUI.new WhiteQueenUI();
 	public static final PieceUI WHITE_ROOK = pieceUI.new WhiteRookUI();
 	
-	public static final PieceUI BLACK_Bishop = pieceUI.new BlackBishopUI();
+	public static final PieceUI BLACK_BISHOP = pieceUI.new BlackBishopUI();
 	public static final PieceUI BLACK_KING = pieceUI.new BlackKingUI();
 	public static final PieceUI BLACK_KNIGHT = pieceUI.new BlackKnightUI();
 	public static final PieceUI BLACK_PAWN = pieceUI.new BlackPawnUI();

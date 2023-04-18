@@ -3,8 +3,6 @@ package util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.ImageIcon;
-
 import models.ChessBoard;
 import models.Piece;
 import models.Position;

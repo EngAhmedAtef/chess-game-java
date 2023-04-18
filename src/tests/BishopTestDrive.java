@@ -1,19 +1,12 @@
 package tests;
 
-import static util.ChessUtilities.setupBoard;
-import static util.ChessUtilities.validateAndMove;
-
-import java.awt.Color;
-
-import models.Bishop;
-import models.ChessBoard;
-import models.Move;
-import models.Piece;
-import models.Position;
-import util.PieceFactory;;
-
 public class BishopTestDrive {
 
+	// TODO: Test all of the pieces
+	// TODO: Create a palyer and a game manager
+	// TODO: Work on moving the pieces on the UI
+	// TODO: Create a menu
 	public static void main(String[] args) {
+
 	}
 }

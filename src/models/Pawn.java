@@ -50,7 +50,6 @@ public class Pawn extends Piece {
 			if (boardPiece != null)
 				return new MoveStatus(MoveState.FAILURE, "The Pawn is moving but the square is occupied");
 
-			hasMoved = true;
 			return new MoveStatus(MoveState.SUCCESS, null);
 		}
 
@@ -71,7 +70,6 @@ public class Pawn extends Piece {
 			if (boardPiece != null)
 				return new MoveStatus(MoveState.FAILURE, "The Pawn is moving 2 squares but the square is occupied");
 
-			hasMoved = true;
 			return new MoveStatus(MoveState.SUCCESS, null);
 		}
 

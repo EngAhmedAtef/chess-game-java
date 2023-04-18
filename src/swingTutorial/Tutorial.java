@@ -1,9 +1,15 @@
 package swingTutorial;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Tutorial {
 
@@ -32,6 +38,10 @@ class MyFrame extends JFrame {
 
 class DragPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8711679593350824518L;
 	ImageIcon icon = new ImageIcon("whiteQueen.png");
 	final int WIDTH = icon.getIconWidth();
 	final int HEIGHT = icon.getIconHeight();

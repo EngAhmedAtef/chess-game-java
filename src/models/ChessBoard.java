@@ -1,14 +1,9 @@
 package models;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoard {
-	// Static variables
-	public static final Color COLOR_PEACH = new Color(0xFFB6B9);
-	public static final Color COLOR_TEAL = new Color(0xBBDED6);
-	
 	// Instance variables
 	private Piece[][] pieces;
 
@@ -38,10 +33,14 @@ public class ChessBoard {
 			System.out.println("Piece captured: " + capturedPiece);
 		}
 
-		pieces[endPosition.row()][endPosition.column()] = piece;
 		piece.setPosition(move.endPosition());
+		pieces[endPosition.row()][endPosition.column()] = piece;
 		pieces[startPosition.row()][startPosition.column()] = null;
 
+		if (piece.getClass() == Pawn.class)
+			((Pawn) piece).setHasMoved(true);
+		
+		piece.updatePossibleMoves();
 		System.out.println(piece.getColor().getColorName() + piece.getClass().getSimpleName()
 				+ " moved to " + endPosition);
 	}

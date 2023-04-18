@@ -59,10 +59,5 @@ public abstract class ChessUtilities {
 			System.out.println(moveStatus.getMessage());
 			
 	}
-	
-	public static ChessBoard setupBoard() {
-		Piece[][] pieces = new Piece[8][8];
-		return new ChessBoard(pieces);
-	}
 
 }
