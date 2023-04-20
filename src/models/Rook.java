@@ -8,6 +8,8 @@ import util.PieceColors;
 
 public class Rook extends Piece {
 
+	private static final long serialVersionUID = 4302332140029458743L;
+
 	// Constructors
 	public Rook(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
 		super(color, position, chessBoard, pieceUI);

@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,13 +8,15 @@ import ui.PieceUI;
 import util.PieceColors;
 
 
-public abstract class Piece {
+public abstract class Piece implements Serializable {
+
+	private static final long serialVersionUID = -2031046168990546537L;
 	// Instance variables
 	private PieceColors color;
 	private Position position;
 	private ChessBoard chessBoard;
 	private PieceUI pieceUI;
-	private List<Position> possibleMoves;
+	private List<Position> possibleMoves = new ArrayList<>();
 	
 	// Constructors
 	public Piece(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
@@ -21,7 +24,6 @@ public abstract class Piece {
 		this.position = position;
 		this.chessBoard = chessBoard;
 		this.pieceUI = pieceUI;
-		possibleMoves = new ArrayList<>();
 	}
 	
 	// Getters
@@ -40,6 +42,9 @@ public abstract class Piece {
 	
 	// Methods
 	public abstract MoveStatus isValidMove(Move move);
+	
+	// Called by the ChessBoard's updatePiecesPossibleMoves()
+	// Also called when the GameManager calls the setupBoard() method through the ChessBoard.
 	public List<Position> updatePossibleMoves() {
 		Piece[][] pieces = chessBoard.getPieces();
 		possibleMoves.clear();
@@ -51,7 +56,7 @@ public abstract class Piece {
 					continue;
 				
 				Position currentSquare = new Position(row, col);
-				Move move = new Move(this, getPosition(), currentSquare, (boardPiece != null && boardPiece.getColor() != getColor()) ? true : false);
+				Move move = new Move(this, getPosition(), currentSquare, (boardPiece != null && boardPiece.getColor() != getColor()));
 				MoveStatus moveStatus = isValidMove(move);
 				if (moveStatus.getMoveState() == MoveState.SUCCESS)
 					possibleMoves.add(currentSquare);
@@ -60,7 +65,6 @@ public abstract class Piece {
 		
 		return possibleMoves;
 	}
-	
 	
 	@Override
 	public String toString() {

@@ -7,6 +7,7 @@ import util.PieceColors;
 
 public class Pawn extends Piece {
 
+	private static final long serialVersionUID = 5648478967291426436L;
 	// Instance variables
 	private boolean hasMoved;
 

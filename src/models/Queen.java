@@ -9,6 +9,8 @@ import util.PieceColors;
 
 public class Queen extends Piece {
 
+	private static final long serialVersionUID = -3966723971788954675L;
+
 	// Constructors
 	public Queen(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
 		super(color, position, chessBoard, pieceUI);

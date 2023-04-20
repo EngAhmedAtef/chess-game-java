@@ -1,9 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChessBoard {
+public class ChessBoard implements Serializable {
+
+	private static final long serialVersionUID = 2906380867476785569L;
 	// Instance variables
 	private Piece[][] pieces;
 
@@ -40,9 +43,17 @@ public class ChessBoard {
 		if (piece.getClass() == Pawn.class)
 			((Pawn) piece).setHasMoved(true);
 		
-		piece.updatePossibleMoves();
+		updatePiecesPossibleMoves();
 		System.out.println(piece.getColor().getColorName() + piece.getClass().getSimpleName()
 				+ " moved to " + endPosition);
+	}
+	
+	public void updatePiecesPossibleMoves() {
+		for (Piece[] row : pieces) {
+			for (Piece piece : row) 
+				if (piece != null)
+					piece.updatePossibleMoves();
+		}
 	}
 
 	public Piece getPiece(Position position) {

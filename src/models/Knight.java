@@ -5,6 +5,8 @@ import util.PieceColors;
 
 public class Knight extends Piece {
 
+	private static final long serialVersionUID = -1172883738748688978L;
+
 	// Constructors
 	public Knight(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
 		super(color, position, chessBoard, pieceUI);

@@ -7,6 +7,8 @@ import util.PieceColors;
 
 public class Bishop extends Piece {
 
+	private static final long serialVersionUID = -2876109646936742626L;
+
 	// Constructors
 	public Bishop(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
 		super(color, position, chessBoard, pieceUI);

@@ -8,10 +8,9 @@ import util.PieceColors;
 
 public class King extends Piece {
 
+	private static final long serialVersionUID = 630533465927876025L;
 	// Instance variables
 	private boolean isChecked;
-	private int numOfChecks = 0;
-	private final int maxChecks = 3;
 
 	// Constructors
 	public King(PieceColors color, Position position, ChessBoard chessBoard, PieceUI pieceUI) {
@@ -63,16 +62,7 @@ public class King extends Piece {
 	}
 
 	private boolean isResultingInCheck(Move move) {
-		// Check if this method was called 3 times
-		// In that case the method is being invoked by both Kings which 
-		// will lead to a StackOverFlow
-		// And so we terminate by returning true in that case if it was invoked 3 times
-		if (numOfChecks == maxChecks) {
-			numOfChecks = 0;
-			return true;
-		}
-		
-		numOfChecks++;
+
 		List<Piece> diffColoredPieces = new ArrayList<>();
 
 		for (Piece[] row : getChessBoard().getPieces()) {
@@ -82,27 +72,12 @@ public class King extends Piece {
 			}
 		}
 		
-		System.out.println(diffColoredPieces.size());
-		
-		// TODO: Need to differentiate between a copy piece for logic purpose and a real piece that should be added to the UI
-		Piece kingCopy = new King(getColor(), move.endPosition(), getChessBoard(), getPieceUI());
-		getChessBoard().addPiece(kingCopy, kingCopy.getPosition());
-
-		boolean checkPiece = diffColoredPieces.stream()
-				.anyMatch(piece -> piece.isValidMove(new Move(piece, piece.getPosition(), move.endPosition(), true))
-						.getMoveState() == MoveState.SUCCESS);
-
-		getChessBoard().removePiece(kingCopy);
-		kingCopy = null;
-		
-		System.out.println(checkPiece);
-		
-		if (checkPiece) {
-			numOfChecks = 0;
-			return true;	
+		for (Piece diffColoredPiece : diffColoredPieces) {
+			List<Position> possibleMoves = diffColoredPiece.getPossibleMoves();
+			if (possibleMoves.contains(move.endPosition()))
+				return true;
 		}
-
-		numOfChecks = 0;
+		
 		return false;
 	}
 
