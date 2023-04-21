@@ -22,7 +22,7 @@ public class Rook extends Piece {
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 
 		// Check if the Rook is moving out of the board's bounds
-		if (!getChessBoard().isLegalMove(move))
+		if (!move.piece().getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "The Rook is moving out of the board's bounds");
 		
 		// Check if the Rook is moving to the same initial position
@@ -32,11 +32,11 @@ public class Rook extends Piece {
 		// Check if the Rook is moving horizontally
 		if (rowDifference == 0 && columnDifference != 0) {
 			// Check if there is intermediate pieces
-			if (!isHorizontalClear(getChessBoard(), this, move.startPosition(), move.endPosition()))
+			if (!isHorizontalClear(move.piece().getChessBoard(), this, move.startPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Rook is moving horizontally but the path is blocked");
 
 			// Check if the desired square is occupied by a piece of the same color
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null && boardPiece.getColor() == getColor())
 				return new MoveStatus(MoveState.FAILURE,
 						"The Rook is trying to move but the square is occupied by a piece of the same color");
@@ -46,11 +46,11 @@ public class Rook extends Piece {
 		// Check if the Rook is moving vertically
 		if (rowDifference != 0 && columnDifference == 0) {
 			// Check if there is intermediate pieces
-			if (!isVerticalClear(getChessBoard(), this, move.startPosition(), move.endPosition()))
+			if (!isVerticalClear(move.piece().getChessBoard(), this, move.startPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Rook is moving vertically but the path is blocked");
 			
 			// Check if the desired square is occupied by a piece of the same color
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null && boardPiece.getColor() == getColor())
 				return new MoveStatus(MoveState.FAILURE,
 						"The Rook is trying to move but the square is occupied by a piece of the same color");

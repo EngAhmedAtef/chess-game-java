@@ -23,18 +23,18 @@ public class Queen extends Piece {
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 
 		// Check if the Queen is moving out the bounds of the board
-		if (!getChessBoard().isLegalMove(move))
+		if (!move.piece().getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving out the bounds of the board");
 
 		// Check if the Queen is moving to the same location
 		if (move.endPosition().equals(move.startPosition()))
 			return new MoveStatus(MoveState.FAILURE, "The Queen is moving to the same initial location");
 
-		Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+		Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 		// Check if the Queen is moving diagonally
 		if (Math.abs(rowDifference) == Math.abs(columnDifference)) {
 			// If the Queen is moving Diagonally and it is blocked
-			if (!isDiagonalClear(getChessBoard(), move.startPosition(), move.endPosition()))
+			if (!isDiagonalClear(move.piece().getChessBoard(), move.startPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Queen is moving diagonally but it is blocked.");
 
 			// If the Queen is moving diagonally with no intermediate pieces but the desired
@@ -49,7 +49,7 @@ public class Queen extends Piece {
 		// Check if the Queen is moving horizontally
 		if (rowDifference == 0 && columnDifference != 0) {
 			// If the Queen is moving horizontally and it is blocked
-			if (!isHorizontalClear(getChessBoard(), move.piece(), move.startPosition(), move.endPosition()))
+			if (!isHorizontalClear(move.piece().getChessBoard(), move.piece(), move.startPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Queen is moving horizontally but it is blocked.");
 
 			// If the Queen is moving horizontally with no intermediate pieces but the
@@ -65,7 +65,7 @@ public class Queen extends Piece {
 		// Check if the Queen is moving vertically
 		if (rowDifference != 0 && columnDifference == 0) {
 			// If the Queen is moving vertically and it is blocked
-			if (!isVerticalClear(getChessBoard(), move.piece(), move.endPosition(), move.startPosition()))
+			if (!isVerticalClear(move.piece().getChessBoard(), move.piece(), move.endPosition(), move.startPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Queen is moving vertically but it is blocked.");
 
 			// If the Queen is moving vertically with no intermediate pieces but the desired

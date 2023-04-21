@@ -33,7 +33,7 @@ public class Pawn extends Piece {
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 
 		// Check if the Pawn is moving out of the board's bounds
-		if (!getChessBoard().isLegalMove(move))
+		if (!move.piece().getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "The Pawn is moving out of the board's bounds");
 
 		// Check if the pawn is moving to the same position
@@ -47,7 +47,7 @@ public class Pawn extends Piece {
 		if (((getColor() == PieceColors.WHITE_PIECE && rowDifference == -1) || (getColor() == PieceColors.BLACK_PIECE && rowDifference == 1))
 				&& columnDifference == 0) {
 			// Check if the square is occupied
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null)
 				return new MoveStatus(MoveState.FAILURE, "The Pawn is moving but the square is occupied");
 
@@ -62,12 +62,12 @@ public class Pawn extends Piece {
 				return new MoveStatus(MoveState.FAILURE, "The Pawn can move 2 squares only as its first move");
 
 			// Check if something is blocking the pawn
-			if (!isVerticalClear(getChessBoard(), this, getPosition(), move.endPosition()))
+			if (!isVerticalClear(move.piece().getChessBoard(), this, getPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE,
 						"The Pawn is moving 2 squares but something is blocking its path");
 
 			// Check if the desired square is occupied
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null)
 				return new MoveStatus(MoveState.FAILURE, "The Pawn is moving 2 squares but the square is occupied");
 
@@ -78,7 +78,7 @@ public class Pawn extends Piece {
 		if ((getColor() == PieceColors.WHITE_PIECE && (rowDifference == -1 && Math.abs(columnDifference) == 1))
 				|| (getColor() == PieceColors.BLACK_PIECE && (rowDifference == 1 && Math.abs(columnDifference) == 1))) {
 			// Check if there is a piece to capture
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null && boardPiece.getColor() != getColor())
 				return new MoveStatus(MoveState.SUCCESS, null);
 			

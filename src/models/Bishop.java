@@ -21,7 +21,7 @@ public class Bishop extends Piece {
 		int columnDifference = move.endPosition().column() - move.startPosition().column();
 
 		// Check if the Bishop is going out of the board's bounds
-		if (!getChessBoard().isLegalMove(move))
+		if (!move.piece().getChessBoard().isLegalMove(move))
 			return new MoveStatus(MoveState.FAILURE, "The Bishop is moving out of the board's bounds");
 
 		// Check if the Bishop is moving to the same initial position
@@ -31,11 +31,11 @@ public class Bishop extends Piece {
 		// Check if the Bishop is moving diagonally
 		if (Math.abs(rowDifference) == Math.abs(columnDifference)) {
 			// Check if the diagonal path is blocked
-			if (!isDiagonalClear(getChessBoard(), move.startPosition(), move.endPosition()))
+			if (!isDiagonalClear(move.piece().getChessBoard(), move.startPosition(), move.endPosition()))
 				return new MoveStatus(MoveState.FAILURE, "The Bishop tried to move but there is an intermediate peice");
 
 			// Check if the desired location is occupied by a piece of the same color
-			Piece boardPiece = getChessBoard().getPiece(move.endPosition());
+			Piece boardPiece = move.piece().getChessBoard().getPiece(move.endPosition());
 			if (boardPiece != null && boardPiece.getColor() == getColor())
 				return new MoveStatus(MoveState.FAILURE,
 						"The Bishop tried to move but the square is occupied by a piece of the same color");
