@@ -138,10 +138,6 @@ public class ChessGameFrame extends JFrame {
 				// IF THE BUTTON HAS A PIECE: SELECT THE BUTTON AND HIGHLIGH POSSIBLE SQUARES
 			Piece piece = board.getPiece(position);
 			
-			if (piece != null && (piece.getColor() == PieceColors.WHITE_PIECE && !GameManager.gameManager.isWhiteTurn()
-					|| piece.getColor() == PieceColors.BLACK_PIECE && GameManager.gameManager.isWhiteTurn()))
-				return;
-			
 			if (!possibleSquares.isEmpty()) {
 				if (button.isSelected())
 					clearSelection(button);
@@ -151,7 +147,8 @@ public class ChessGameFrame extends JFrame {
 					clearSelection(button);
 				}
 			} else {
-				if (piece != null) {
+				if (piece != null && (piece.getColor() == PieceColors.WHITE_PIECE && GameManager.gameManager.isWhiteTurn()
+						|| piece.getColor() == PieceColors.BLACK_PIECE && !GameManager.gameManager.isWhiteTurn())) {
 					selectedPiece = piece;
 					button.setSelected(true);
 					List<Position> possibleMoves = piece.getPossibleMoves();
