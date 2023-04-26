@@ -1,5 +1,7 @@
 package models;
 
+import javax.swing.JLabel;
+
 import ui.ChessGameFrame;
 import ui.PieceUI;
 import util.PieceColors;
@@ -12,16 +14,23 @@ public class GameManager {
 	// Instance Variables
 	private ChessBoard board;
 	private ChessGameFrame frame;
+	private boolean whiteTurn;
 
 	// Constructors
 	private GameManager() {
 		board = setupBoard();
 		frame = new ChessGameFrame(board);
+		whiteTurn = true;
+		updateTurnLabel();
 	}
 
 	// Getters
 	public ChessBoard getBoard() { return board; }
+	public boolean isWhiteTurn() { return whiteTurn; }
 
+	// Setters
+	public void setWhiteTurn(boolean whiteTurn) { this.whiteTurn = whiteTurn; }
+	
 	// Methods
 	private ChessBoard setupBoard() {
 		// Create the pieces array
@@ -36,7 +45,7 @@ public class GameManager {
 		PieceFactory.createPiece(Bishop.class, PieceColors.BLACK_PIECE, new Position(0, 2), board, PieceUI.BLACK_BISHOP);
 		PieceFactory.createPiece(Bishop.class, PieceColors.BLACK_PIECE, new Position(0, 5), board, PieceUI.BLACK_BISHOP);
 		PieceFactory.createPiece(Queen.class, PieceColors.BLACK_PIECE, new Position(0, 3), board, PieceUI.BLACK_QUEEN);
-		PieceFactory.createPiece(King.class, PieceColors.BLACK_PIECE, new Position(0, 4), board, PieceUI.BLACK_KING);
+		Piece blackKing = PieceFactory.createPiece(King.class, PieceColors.BLACK_PIECE, new Position(0, 4), board, PieceUI.BLACK_KING);
 
 		// Create the black pawns
 		for (int i = 0; i < 8; i++) {
@@ -53,7 +62,7 @@ public class GameManager {
 		PieceFactory.createPiece(Bishop.class, PieceColors.WHITE_PIECE, new Position(7, 2), board, PieceUI.WHITE_BISHOP);
 		PieceFactory.createPiece(Bishop.class, PieceColors.WHITE_PIECE, new Position(7, 5), board, PieceUI.WHITE_BISHOP);
 		PieceFactory.createPiece(Queen.class, PieceColors.WHITE_PIECE, new Position(7, 3), board, PieceUI.WHITE_QUEEN);
-		PieceFactory.createPiece(King.class, PieceColors.WHITE_PIECE, new Position(7, 4), board, PieceUI.WHITE_KING);
+		Piece whiteKing = PieceFactory.createPiece(King.class, PieceColors.WHITE_PIECE, new Position(7, 4), board, PieceUI.WHITE_KING);
 
 		// Create the white pawns
 		for (int i = 0; i < 8; i++) {
@@ -62,9 +71,13 @@ public class GameManager {
 			pieces[pawn.getPosition().row()][pawn.getPosition().column()] = pawn;
 		}
 
+		// Set the blackKing and whiteKing of the board
+		board.setBlackKing(blackKing);
+		board.setWhiteKing(whiteKing);
+
 		// Update the possible moves for all the pieces
 		board.updatePiecesPossibleMoves();
-
+		
 		// Return the a ChessBoard passing in the pieces array
 		return board;
 	}
@@ -77,7 +90,15 @@ public class GameManager {
 		if (moveStatus.getMoveState() == MoveState.SUCCESS) {
 			board.movePiece(move);
 			frame.drawBoard();
+			whiteTurn = !whiteTurn;
+			updateTurnLabel();
 		} else
 			System.out.println(moveStatus.getMessage());
+	}
+	
+	private void updateTurnLabel() {
+		JLabel turnLabel = frame.getTurnLabel();
+		turnLabel.setText(whiteTurn ? "White turn" : "Black turn");
+		turnLabel.setIcon(whiteTurn ? PieceUI.WHITE_PAWN.getIcon() : PieceUI.BLACK_PAWN.getIcon());
 	}
 }

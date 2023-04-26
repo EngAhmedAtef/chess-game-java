@@ -13,21 +13,24 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import models.BoardSquareColors;
 import models.ChessBoard;
 import models.GameManager;
 import models.Move;
 import models.Piece;
 import models.Position;
-import util.BoardSquareColors;
+import util.PieceColors;
 
 public class ChessGameFrame extends JFrame {
-	/**
-	 * 
-	 */
+	// Static variables
 	private static final long serialVersionUID = 800783242387129706L;
+	
+	// Instance variables
 	private ChessBoard board;
 	private ChessBoardPanel panel;
-
+	private JLabel turnLabel;
+	
+	// Constructors
 	public ChessGameFrame(ChessBoard board) {
 		this.board = board;
 		panel = new ChessBoardPanel();
@@ -53,12 +56,11 @@ public class ChessGameFrame extends JFrame {
 		label2.setOpaque(true);
 		label2.setBackground(Color.green);
 
-		JLabel label3 = new JLabel("Label3");
-		label3.setVerticalAlignment(JLabel.CENTER);
-		label3.setHorizontalAlignment(JLabel.CENTER);
-		label3.setIcon(icon);
-		label3.setOpaque(true);
-		label3.setBackground(Color.blue);
+		turnLabel = new JLabel("");
+		turnLabel.setVerticalAlignment(JLabel.CENTER);
+		turnLabel.setHorizontalAlignment(JLabel.CENTER);
+		turnLabel.setOpaque(true);
+		turnLabel.setBackground(Color.white);
 
 		JLabel label4 = new JLabel("Label4");
 		label4.setVerticalAlignment(JLabel.CENTER);
@@ -69,19 +71,24 @@ public class ChessGameFrame extends JFrame {
 
 		add(BorderLayout.WEST, label1);
 		add(BorderLayout.EAST, label2);
-		add(BorderLayout.NORTH, label3);
+		add(BorderLayout.NORTH, turnLabel);
 		add(BorderLayout.SOUTH, label4);
 		add(BorderLayout.CENTER, panel);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
+	
+	// Getters
+	public JLabel getTurnLabel() { return turnLabel; }
+	
+	// Methods
 	public void drawBoard() {
 		panel.drawBoard();
 		repaint();
 	}
-
+	
+	// Inner classes
 	private class ChessBoardPanel extends JPanel {
 
 		private static final long serialVersionUID = 4011166194793979686L;
@@ -93,8 +100,8 @@ public class ChessGameFrame extends JFrame {
 		private ChessBoardPanel() {
 			setLayout(null);
 			setBorder(BorderFactory.createLineBorder(Color.black, 3));
-			setPreferredSize(new Dimension(600, 600));
-			setSize(600, 600);
+			setPreferredSize(new Dimension(800, 850));
+			setSize(800, 900);
 
 			squareEdge = getWidth() / 8;
 
@@ -130,6 +137,10 @@ public class ChessGameFrame extends JFrame {
 			// IF NO: 
 				// IF THE BUTTON HAS A PIECE: SELECT THE BUTTON AND HIGHLIGH POSSIBLE SQUARES
 			Piece piece = board.getPiece(position);
+			
+			if (piece != null && (piece.getColor() == PieceColors.WHITE_PIECE && !GameManager.gameManager.isWhiteTurn()
+					|| piece.getColor() == PieceColors.BLACK_PIECE && GameManager.gameManager.isWhiteTurn()))
+				return;
 			
 			if (!possibleSquares.isEmpty()) {
 				if (button.isSelected())

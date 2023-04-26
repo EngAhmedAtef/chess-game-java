@@ -11,8 +11,10 @@ public class King extends Piece {
 
 	private static final long serialVersionUID = 630533465927876025L;
 	// Instance variables
-	private boolean isChecked;
-	// A copy of the board
+	private boolean checked;
+	private List<Piece> checkingPieces = new ArrayList<>();
+	
+	// Static variables
 	private static Piece[][] copiedPieces;
 	private static ChessBoard fakeBoard;
 	private static Piece tempQueen = new Queen(null, null, null, null);
@@ -24,15 +26,17 @@ public class King extends Piece {
 	}
 
 	// Getters
-	public boolean isChecked() {
-		return isChecked;
-	}
+	public boolean isChecked() { return checked; }
+	public List<Piece> getCheckingPieces() { return checkingPieces; }
 
 	// Setters
-	public void setIsChecked(boolean isChecked) {
-		this.isChecked = isChecked;
+	public void setChecked(boolean checked) { 
+		this.checked = checked;
+		if (!checked)
+			checkingPieces.clear();
 	}
-
+	public void setCheckingPieces(List<Piece> checkingPieces) { this.checkingPieces = checkingPieces; }
+	
 	// Methods
 	@Override
 	public MoveStatus isValidMove(Move move) {
@@ -67,8 +71,6 @@ public class King extends Piece {
 		
 		return new MoveStatus(MoveState.FAILURE, "The king can only move 1 square in any direction");
 	}
-
-	// TODO : FIX THIS SHIT!!
 	
 	private boolean isResultingInCheck(Move move) {
 		// Create a list that will hold the different colored pieces
