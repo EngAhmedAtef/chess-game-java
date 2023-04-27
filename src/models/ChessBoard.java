@@ -206,47 +206,47 @@ public class ChessBoard implements Serializable {
 				&& (move.endPosition().column() >= 0 && move.endPosition().column() < 8);
 	}
 	
-	public List<Position> getPath(Position fromPosition, Position toPosition) {
-		// Check if both squares are on the same row
-		// Check if both squares are on the same column
-		// Check if both squares are on the same diagonal
-		// Otherwise it's a Knight move
-		
-		int rowDiff = toPosition.row() - fromPosition.row();
-		int colDiff = toPosition.column() - fromPosition.column();
-		List<Position> path = new ArrayList<>();
-		
-		// Both squares are on the same row
-		if (rowDiff == 0 && colDiff != 0) {
-			int min = Math.min(fromPosition.column(), toPosition.column());
-			int max = Math.max(fromPosition.column(), toPosition.column());
-			
-			for (int i = min; i < max; i++)
-				path.add(pieces[fromPosition.row()][i].getPosition());
-		} // Both squares are on the same column
-		else if (colDiff == 0 && rowDiff != 0) {
-			int min = Math.min(fromPosition.row(), toPosition.row());
-			int max = Math.max(fromPosition.row(), toPosition.row());
-			
-			for (int i = min; i < max; i++)
-				path.add(pieces[fromPosition.column()][i].getPosition());
-		} // Both squares are on the same diagonal
-		else if (Math.abs(colDiff) == Math.abs(rowDiff)) {
-			int xDirection = Integer.signum(rowDiff);
-			int yDirection = Integer.signum(colDiff);
-
-			int currentRow = fromPosition.row() + xDirection;
-			int currentColumn = fromPosition.column() + yDirection;
-
-			while (currentRow != toPosition.row() && currentColumn != toPosition.column()) {
-				path.add(new Position(currentRow, currentColumn));
-				currentRow += xDirection;
-				currentColumn += yDirection;
-			}
-		} 
-		// Else: It's a Knight so we can simply return the empty path
-		
-		return path;
-	}
+//	public List<Position> getPath(Position fromPosition, Position toPosition) {
+//		// Check if both squares are on the same row
+//		// Check if both squares are on the same column
+//		// Check if both squares are on the same diagonal
+//		// Otherwise it's a Knight move
+//		
+//		int rowDiff = toPosition.row() - fromPosition.row();
+//		int colDiff = toPosition.column() - fromPosition.column();
+//		List<Position> path = new ArrayList<>();
+//		
+//		// Both squares are on the same row
+//		if (rowDiff == 0 && colDiff != 0) {
+//			int min = Math.min(fromPosition.column(), toPosition.column());
+//			int max = Math.max(fromPosition.column(), toPosition.column());
+//			
+//			for (int i = min; i < max; i++)
+//				path.add(pieces[fromPosition.row()][i].getPosition());
+//		} // Both squares are on the same column
+//		else if (colDiff == 0 && rowDiff != 0) {
+//			int min = Math.min(fromPosition.row(), toPosition.row());
+//			int max = Math.max(fromPosition.row(), toPosition.row());
+//			
+//			for (int i = min; i < max; i++)
+//				path.add(pieces[fromPosition.column()][i].getPosition());
+//		} // Both squares are on the same diagonal
+//		else if (Math.abs(colDiff) == Math.abs(rowDiff)) {
+//			int xDirection = Integer.signum(rowDiff);
+//			int yDirection = Integer.signum(colDiff);
+//
+//			int currentRow = fromPosition.row() + xDirection;
+//			int currentColumn = fromPosition.column() + yDirection;
+//
+//			while (currentRow != toPosition.row() && currentColumn != toPosition.column()) {
+//				path.add(new Position(currentRow, currentColumn));
+//				currentRow += xDirection;
+//				currentColumn += yDirection;
+//			}
+//		} 
+//		// Else: It's a Knight so we can simply return the empty path
+//		
+//		return path;
+//	}
 
 }

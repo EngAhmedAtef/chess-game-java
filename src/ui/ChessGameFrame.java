@@ -7,17 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import models.BoardSquareColors;
 import models.ChessBoard;
 import models.GameManager;
 import models.Move;
 import models.Piece;
+import models.Player;
 import models.Position;
 import util.PieceColors;
 
@@ -29,6 +34,8 @@ public class ChessGameFrame extends JFrame {
 	private ChessBoard board;
 	private ChessBoardPanel panel;
 	private JLabel turnLabel;
+	private JTextArea textArea;
+	private JTextField textField;
 	
 	// Constructors
 	public ChessGameFrame(ChessBoard board) {
@@ -48,14 +55,27 @@ public class ChessGameFrame extends JFrame {
 		label1.setIcon(icon);
 		label1.setOpaque(true);
 		label1.setBackground(Color.red);
+		
+		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
+		JScrollPane messageScroller = new JScrollPane(textArea);
 
-		JLabel label2 = new JLabel("Label2");
-		label2.setVerticalAlignment(JLabel.CENTER);
-		label2.setHorizontalAlignment(JLabel.CENTER);
-		label2.setIcon(icon);
-		label2.setOpaque(true);
-		label2.setBackground(Color.green);
-
+		textField = new JTextField(20);
+		
+		JButton sendButton = new JButton("Send");
+		sendButton.addActionListener(e -> sendMessage(textField.getText()));
+		
+		JPanel textPanel = new JPanel();
+		textPanel.add(textField);
+		textPanel.add(sendButton);
+		
+		JPanel chatPanel = new JPanel();
+		chatPanel.add(messageScroller);
+		chatPanel.add(textPanel);
+		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
+		
 		turnLabel = new JLabel("");
 		turnLabel.setVerticalAlignment(JLabel.CENTER);
 		turnLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -70,7 +90,7 @@ public class ChessGameFrame extends JFrame {
 		label4.setBackground(Color.magenta);
 
 		add(BorderLayout.WEST, label1);
-		add(BorderLayout.EAST, label2);
+		add(BorderLayout.EAST, chatPanel);
 		add(BorderLayout.NORTH, turnLabel);
 		add(BorderLayout.SOUTH, label4);
 		add(BorderLayout.CENTER, panel);
@@ -79,8 +99,16 @@ public class ChessGameFrame extends JFrame {
 		setVisible(true);
 	}
 	
+	private void sendMessage(String text) {
+		Player player = GameManager.gameManager.getPlayer();
+		player.sendMessage(text);
+		textField.setText("");
+		textField.requestFocus();
+	}
+
 	// Getters
 	public JLabel getTurnLabel() { return turnLabel; }
+	public JTextArea getTextArea() { return textArea; }
 	
 	// Methods
 	public void drawBoard() {
@@ -143,7 +171,8 @@ public class ChessGameFrame extends JFrame {
 					clearSelection(button);
 				else if (possibleSquares.contains(button)) {
 					Move move = new Move(selectedPiece, selectedPiece.getPosition(), position, piece != null);
-					GameManager.gameManager.makeMove(move);
+					Player player = GameManager.gameManager.getPlayer();
+					player.sendMove(move);
 					clearSelection(button);
 				}
 			} else {

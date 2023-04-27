@@ -17,6 +17,7 @@ public class GameManager {
 	private ChessBoard board;
 	private ChessGameFrame frame;
 	private boolean whiteTurn;
+	private Player player;
 
 	// Constructors
 	private GameManager() {
@@ -29,9 +30,11 @@ public class GameManager {
 	// Getters
 	public ChessBoard getBoard() { return board; }
 	public boolean isWhiteTurn() { return whiteTurn; }
+	public Player getPlayer() { return player; }
 
 	// Setters
 	public void setWhiteTurn(boolean whiteTurn) { this.whiteTurn = whiteTurn; }
+	public void setPlayer(Player player) { this.player = player; }
 	
 	// Methods
 	private ChessBoard setupBoard() {
@@ -85,9 +88,6 @@ public class GameManager {
 	}
 
 	public void makeMove(Move move) {
-		// For now just make the move regardless of the players
-		// TODO: Make moves based on players
-		// Ask the piece if it's a valid move
 		MoveStatus moveStatus = move.piece().isValidMove(move);
 		if (moveStatus.getMoveState() == MoveState.SUCCESS) {
 			board.movePiece(move);
@@ -114,7 +114,7 @@ public class GameManager {
 			frame.dispose();
 	}
 
-	public void tellEveryone(String message) {
-		
+	public void sendMessage(String message) {
+		frame.getTextArea().append(message + "\n");
 	}
 }
