@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.PieceUI;
 import util.PieceColors;
+import util.PieceFactory;
 
 public class ChessBoard implements Serializable {
 
@@ -43,9 +45,17 @@ public class ChessBoard implements Serializable {
 		piece.setPosition(move.endPosition());
 		pieces[endPosition.row()][endPosition.column()] = piece;
 		pieces[startPosition.row()][startPosition.column()] = null;
-
-		if (piece.getClass() == Pawn.class && !((Pawn) piece).hasMoved())
-			((Pawn) piece).setHasMoved(true);
+		
+		if (piece.getClass() == Pawn.class) {
+			if (!((Pawn) piece).hasMoved())
+				((Pawn) piece).setHasMoved(true);
+			if ((endPosition.row() == 0 && piece.getColor() == PieceColors.WHITE_PIECE)
+					|| (endPosition.row() == 7 && piece.getColor() == PieceColors.BLACK_PIECE)) {
+				Piece queen = PieceFactory.createPiece(Queen.class, piece.getColor(), endPosition, this,
+						piece.getColor() == PieceColors.WHITE_PIECE ? PieceUI.WHITE_QUEEN : PieceUI.BLACK_QUEEN);
+				pieces[endPosition.row()][endPosition.column()] = queen;
+			}
+		}
 		
 		((King) blackKing).setChecked(false);
 		((King) whiteKing).setChecked(false);

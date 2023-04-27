@@ -49,6 +49,10 @@ public class GameServer {
 		}
 	}
 	
+	private void tellEveryone(String message) {
+		GameManager.gameManager.tellEveryone(message);
+	}
+	
 	private class ClientHandler implements Runnable {
 		ObjectInputStream reader;
 		
@@ -63,18 +67,22 @@ public class GameServer {
 		
 		@Override
 		public void run() {
-			Object move;
+			Object input;
 			try {
-				while ((move = reader.readObject()) != null) {
-					System.out.println("Received a move from the player. Sending it to the GameManager.");
-					GameManager.gameManager.makeMove((Move) move);
+				while ((input = reader.readObject()) != null) {
+					if (input instanceof Move) {
+						System.out.println("Received a move from the player. Sending it to the GameManager.");
+						GameManager.gameManager.makeMove((Move) input);
+					} else if (input instanceof String) {
+						String message = (String) input;
+						System.out.println("Received a message: " + message);
+						tellEveryone(message);
+					}
 				}
 			} catch (IOException | ClassNotFoundException e) {
-				System.out.println("There was an error while reading a move from the player");
+				System.out.println("There was an error while reading a request from the player");
 				e.printStackTrace();
 			}
 		}
-		
 	}
-	
 }

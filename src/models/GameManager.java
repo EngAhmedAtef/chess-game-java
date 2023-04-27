@@ -113,4 +113,8 @@ public class GameManager {
 		if (answer == 1)
 			frame.dispose();
 	}
+
+	public void tellEveryone(String message) {
+		
+	}
 }

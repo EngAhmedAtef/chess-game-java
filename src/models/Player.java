@@ -56,6 +56,16 @@ public class Player {
 		}
 	}
 	
+	public void sendMessage(String message) {
+		try {
+			outStream.writeObject(message);
+			System.out.println("Sent a message: " + message);
+		} catch (IOException e) {
+			System.out.println("Could not send a message to the server");
+			e.printStackTrace();
+		}
+	}
+	
 	public void disconnectFromServer() {
 		try {
 			outStream.close();
