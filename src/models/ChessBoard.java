@@ -51,7 +51,6 @@ public class ChessBoard implements Serializable {
 		((King) whiteKing).setChecked(false);
 		
 		checkForChecks(); 
-		
 		updatePiecesPossibleMoves();
 		System.out.println(piece.getColor().getColorName() + " " + piece.getClass().getSimpleName()
 				+ " moved to " + endPosition);
@@ -77,7 +76,6 @@ public class ChessBoard implements Serializable {
 				System.out.println("White " + whitePiece.getClass().getSimpleName() + " is checking the Black King");
 			}
 		}
-		
 
 		for (Piece blackPiece : blackColorPieces) {
 			Move attackMove = new Move(blackPiece, blackPiece.getPosition(), whiteKing.getPosition(), true);
@@ -129,6 +127,41 @@ public class ChessBoard implements Serializable {
 				if (piece != null)
 					piece.updatePossibleMoves();
 		}
+	}
+	
+	public void isGameOver() {
+		List<Piece> whiteColorPieces = new ArrayList<>();
+		List<Piece> blackColorPieces = new ArrayList<>();
+		boolean whiteLost = true;
+		boolean blackLost = true;
+		
+		for (Piece[] row : pieces) 
+			for (Piece rowPiece : row) {
+				if (rowPiece != null && rowPiece.getColor() == PieceColors.WHITE_PIECE)
+					whiteColorPieces.add(rowPiece);
+				else if (rowPiece != null && rowPiece.getColor() == PieceColors.BLACK_PIECE)
+					blackColorPieces.add(rowPiece);
+			}
+		
+		for (Piece whitePiece : whiteColorPieces) {
+			if (!whitePiece.getPossibleMoves().isEmpty()) {
+				whiteLost = false;
+				break;
+			}
+		}
+
+		for (Piece blackPiece : blackColorPieces) {
+			if (!blackPiece.getPossibleMoves().isEmpty()) {
+				blackLost = false;
+				break;
+			}
+		}
+		
+		if (whiteLost)
+			GameManager.gameManager.gameOver(PieceColors.WHITE_PIECE);
+		else if (blackLost)
+			GameManager.gameManager.gameOver(PieceColors.BLACK_PIECE);
+		
 	}
 
 	public Piece getPiece(Position position) {

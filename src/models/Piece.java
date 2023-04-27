@@ -133,6 +133,8 @@ public abstract class Piece implements Serializable {
 					if (isValidMove(move).getMoveState() == MoveState.SUCCESS) {
 						// Simulate the move
 						Position oldPosition = thisCopy.getPosition();
+						Piece currentSquarePiece = copiedPieces[currentSquare.row()][currentSquare.column()];
+						
 						copiedPieces[thisCopy.getPosition().row()][thisCopy.getPosition().column()] = null;
 						copiedPieces[currentSquare.row()][currentSquare.column()] = thisCopy;
 						thisCopy.setPosition(currentSquare);
@@ -146,6 +148,7 @@ public abstract class Piece implements Serializable {
 						copiedPieces[thisCopy.getPosition().row()][thisCopy.getPosition().column()] = null;
 						copiedPieces[oldPosition.row()][oldPosition.column()] = thisCopy;
 						thisCopy.setPosition(oldPosition);
+						copiedPieces[currentSquare.row()][currentSquare.column()] = currentSquarePiece;
 					}
 				}
 			}

@@ -1,6 +1,8 @@
 package models;
 
+import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import ui.ChessGameFrame;
 import ui.PieceUI;
@@ -92,6 +94,7 @@ public class GameManager {
 			frame.drawBoard();
 			whiteTurn = !whiteTurn;
 			updateTurnLabel();
+			board.isGameOver();
 		} else
 			System.out.println(moveStatus.getMessage());
 	}
@@ -100,5 +103,14 @@ public class GameManager {
 		JLabel turnLabel = frame.getTurnLabel();
 		turnLabel.setText(whiteTurn ? "White turn" : "Black turn");
 		turnLabel.setIcon(whiteTurn ? PieceUI.WHITE_PAWN.getIcon() : PieceUI.BLACK_PAWN.getIcon());
+	}
+
+	public void gameOver(PieceColors color) {
+		frame.getTurnLabel().setText("GAME OVER!");
+		String message = (color == PieceColors.WHITE_PIECE ? "White lost the game. Black wins!" : "Black lost the game. White wins!") + "\nPlay again?";
+		Icon icon = color == PieceColors.WHITE_PIECE ? PieceUI.BLACK_KING.getIcon() : PieceUI.WHITE_KING.getIcon();
+		int answer = JOptionPane.showConfirmDialog(frame, message, "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION, icon);
+		if (answer == 1)
+			frame.dispose();
 	}
 }
